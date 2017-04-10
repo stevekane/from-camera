@@ -6,10 +6,13 @@ var Camera = require('../index')
 var regl = Regl()
 var camera = new Camera(regl)
 
-var triangle = {
+var mesh = {
   vertices: [ -1, -1, 0, 1, -1, 0, 0, 1, 0 ],
   indices: [ 0, 1, 2 ],
-  model: Mat4.create()
+  position: Vec3.create(),
+  rotation: Quat.create(),
+  model: Mat4.create(),
+  transform: Mat4.create()
 }
 
 var renderMesh = regl({
@@ -18,10 +21,11 @@ var renderMesh = regl({
 
     uniform mat4 projection;
     uniform mat4 view;
+    uniform mat4 transform;
     uniform mat4 model;
 
     void main () {
-      gl_Position = projection * view * model * vec4(position, 1);
+      gl_Position = transform * vec4(position, 1);
     } 
   `,
   frag: `
@@ -37,13 +41,24 @@ var renderMesh = regl({
     position: regl.prop('mesh.vertices'),
   },
   uniforms: {
-    model: regl.prop('mesh.model') 
+    model: regl.prop('mesh.model'),
+    transform: regl.prop('mesh.transform')
   },
-  elements: regl.prop('mesh.indices')
+  elements: regl.prop('mesh.indices'),
+  cull: {
+    enable: true 
+  }
 })
 
 regl.frame(function ({ tick, viewportWidth, viewportHeight }) {
+  Quat.rotateY(mesh.rotation, mesh.rotation, Math.PI / 60)
+  Vec3.set(mesh.position, 0, Math.sin(tick / 20), 0)
+  Mat4.fromRotationTranslation(mesh.model, mesh.rotation, mesh.position)
   camera.aspectRatio = viewportWidth / viewportHeight
-  camera.eye[2] = Math.sin(tick / 24) + 4
-  camera.perspective({}, _ => renderMesh({ mesh: triangle }))
+  camera.eye[2] = 8
+  camera.perspective({}, function (c, p) {
+    Mat4.multiply(mesh.transform, camera.projection, camera.view)
+    Mat4.multiply(mesh.transform, mesh.transform, mesh.model)
+    renderMesh({ mesh })
+  })
 })

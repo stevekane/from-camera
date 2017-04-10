@@ -18,17 +18,17 @@ function Camera ( regl, opts ) {
 
   var ortho = function ( props, cb ) {
     Object.assign(this, props)
-    Mat4.lookAt(this.view, this.eye, this.target, this.up),
-    Mat4.ortho(this.projection, this.left, this.right, this.bottom, this.top, this.near, this.far),
-    Mat4.invert(this.viewInverse, this.view),
-    Mat4.invert(this.projectionInverse, this.projection),
+    Mat4.lookAt(this.view, this.eye, this.target, this.up)
+    Mat4.ortho(this.projection, this.left, this.right, this.bottom, this.top, this.near, this.far)
+    Mat4.invert(this.viewInverse, this.view)
+    Mat4.invert(this.projectionInverse, this.projection)
     draw(this, cb)
   }
   var perspective = function ( props, cb ) {
     Object.assign(this, props)
-    Mat4.lookAt(this.view, this.eye, this.target, this.up),
-    Mat4.perspective(this.projection, this.fovy, this.aspectRatio, this.near, this.far),
-    Mat4.invert(this.viewInverse, this.view),
+    Mat4.lookAt(this.view, this.eye, this.target, this.up)
+    Mat4.perspective(this.projection, this.fovy, this.aspectRatio, this.near, this.far)
+    Mat4.invert(this.viewInverse, this.view)
     Mat4.invert(this.projectionInverse, this.projection)
     draw(this, cb)
   }

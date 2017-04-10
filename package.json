@@ -1,0 +1,38 @@
+{
+  "name": "from-camera",
+  "version": "1.0.0",
+  "description": "Regl-compatible set of cameras for easily setting up and rendering scenes from a variety of controllable cameras",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevekane/from-camera.git"
+  },
+  "keywords": [
+    "regl",
+    "camera",
+    "webgl",
+    "3d",
+    "webvr"
+  ],
+  "author": "Steve Kane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevekane/from-camera/issues"
+  },
+  "homepage": "https://github.com/stevekane/from-camera#readme",
+  "dependencies": {
+    "gl-mat4": "^1.1.4",
+    "gl-quat": "^1.0.0",
+    "gl-vec3": "^1.0.3"
+  },
+  "devDependencies": {
+    "dat.gui": "^0.6.1",
+    "regl": "^1.3.0"
+  }
+}
